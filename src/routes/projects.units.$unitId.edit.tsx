@@ -1,0 +1,3 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { UnitForm } from "./projects.units.create";
+export const Route=createFileRoute("/projects/units/$unitId/edit")({head:({params})=>({meta:[{title:`Edit ${params.unitId} | Green Horizon CRM`},{name:"description",content:"Edit unit specifications, pricing and hierarchy with audit tracking."},{property:"og:title",content:`Edit ${params.unitId} | Green Horizon CRM`},{property:"og:description",content:"Edit unit specifications, pricing and hierarchy with audit tracking."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}]}),component:()=> <UnitForm edit/>});

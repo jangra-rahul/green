@@ -1,0 +1,40 @@
+export type ReceivableStatus="Draft"|"Open"|"Partially Paid"|"Paid"|"Overdue"|"Pending Verification"|"Cleared"|"On Hold"|"Cancelled";
+export type PayableStatus="Draft"|"Pending Approval"|"Approved"|"Due"|"Partially Paid"|"Paid"|"Overdue"|"On Hold"|"Rejected";
+export type Receivable={id:string;accountId:string;customer:string;customerId:string;project:string;unit:string;unitId:string;source:string;crmReference:string;amount:number;received:number;outstanding:number;issueDate:string;dueDate:string;status:ReceivableStatus;owner:string};
+export type Supplier={id:string;name:string;contact:string;email:string;phone:string;vat:string;bankMasked:string;terms:string;status:string;projects:string;open:number;overdue:number;paidYtd:number;invoices:number};
+export type Payable={id:string;supplierId:string;supplier:string;invoice:string;project:string;description:string;invoiceDate:string;dueDate:string;gross:number;tax:number;paid:number;approval:string;payment:string;status:PayableStatus;source:string};
+export const aed=(value:number)=>`AED ${value>=1000000?`${(value/1000000).toFixed(value%1000000===0?0:1)}M`:value>=1000?`${(value/1000).toFixed(value%1000===0?0:1)}K`:value.toLocaleString()}`;
+export const receivables:Receivable[]=[
+{id:"AR-2026-01842",accountId:"ARA-2026-00482",customer:"Sarah Ahmed",customerId:"CU-2026-00482",project:"Horizon Residences",unit:"A-1204",unitId:"UNT-HR-A-1204",source:"Reservation",crmReference:"RSV-2026-00182",amount:122500,received:122500,outstanding:0,issueDate:"18 Sep 2026",dueDate:"18 Sep 2026",status:"Cleared",owner:"Maya Joseph"},
+{id:"AR-2026-01843",accountId:"ARA-2026-00491",customer:"Mohammed Al Farsi",customerId:"CU-2026-00491",project:"Green Park",unit:"B-0806",unitId:"UNT-GP-B-0806",source:"Installment",crmReference:"SPA-2026-00138",amount:245000,received:147000,outstanding:98000,issueDate:"18 Aug 2026",dueDate:"18 Sep 2026",status:"Overdue",owner:"Layla Noor"},
+{id:"AR-2026-01844",accountId:"ARA-2026-00502",customer:"Aisha Rahman",customerId:"CU-2026-00502",project:"Creek Vista",unit:"A-1402",unitId:"UNT-CV-A-1402",source:"SPA",crmReference:"SPA-2026-00149",amount:310000,received:160000,outstanding:150000,issueDate:"20 Aug 2026",dueDate:"25 Sep 2026",status:"Partially Paid",owner:"Finance Team"},
+{id:"AR-2026-01845",accountId:"ARA-2026-00511",customer:"Blue Crest Holdings LLC",customerId:"CU-2026-00511",project:"Horizon Residences",unit:"A-1402",unitId:"UNT-HR-A-1402",source:"Fee",crmReference:"RSV-2026-00194",amount:52500,received:0,outstanding:52500,issueDate:"22 Sep 2026",dueDate:"30 Sep 2026",status:"Open",owner:"Maya Joseph"}
+];
+export const receipts=[
+["RCT-2026-00941","Sarah Ahmed","AR-2026-01842","24 Sep 2026","AED 122,500","Bank transfer","Verified","Cleared"],
+["RCT-2026-00942","Mohammed Al Farsi","AR-2026-01843","22 Sep 2026","AED 147,000","Cheque","Verified","Allocated"],
+["RCT-2026-00943","Aisha Rahman","AR-2026-01844","23 Sep 2026","AED 160,000","Bank transfer","Pending Verification","Partially allocated"],
+["RCT-2026-00944","Unmatched payer","Unallocated","24 Sep 2026","AED 50,000","Bank transfer","Recorded","Unallocated"]
+];
+export const receiptAllocations=[["AR-2026-01842","Reservation payment","AED 125,000","AED 125,000"],["AR-2026-01843","Construction installment","AED 245,000","AED 25,000"]];
+export const receivableAging=[["Current","AED 35.8M","248"],["1–30 days","AED 3.2M","48"],["31–60 days","AED 1.8M","24"],["61–90 days","AED 800K","12"],["90+ days","AED 600K","8"]];
+export const suppliers:Supplier[]=[
+{id:"VEN-0082",name:"BuildTech LLC",contact:"Fatima Khan",email:"accounts@buildtech.ae",phone:"+971 4 555 0182",vat:"TRN 100482910200003",bankMasked:"•••• •••• •••• 4821",terms:"30 days",status:"Active",projects:"Horizon Residences · Green Park",open:840000,overdue:0,paidYtd:4600000,invoices:8},
+{id:"VEN-0086",name:"Al Noor Contracting",contact:"Khalid Mansoor",email:"finance@alnoor.ae",phone:"+971 4 555 0214",vat:"TRN 100611842900003",bankMasked:"•••• •••• •••• 1186",terms:"45 days",status:"Active",projects:"Green Park",open:425000,overdue:85000,paidYtd:2850000,invoices:5},
+{id:"VEN-0091",name:"Gulf Facilities LLC",contact:"Ravi Menon",email:"billing@gulffacilities.ae",phone:"+971 4 555 0288",vat:"TRN 100788210400003",bankMasked:"•••• •••• •••• 9031",terms:"30 days",status:"Active",projects:"Creek Vista",open:192000,overdue:42000,paidYtd:1180000,invoices:3}
+];
+export const payables:Payable[]=[
+{id:"AP-2026-00982",supplierId:"VEN-0082",supplier:"BuildTech LLC",invoice:"INV-BT-8219",project:"Horizon Residences",description:"Construction services",invoiceDate:"01 Sep 2026",dueDate:"30 Sep 2026",gross:240000,tax:11000,paid:0,approval:"Approved",payment:"Pending",status:"Due",source:"Vendor Invoice"},
+{id:"AP-2026-00981",supplierId:"VEN-0086",supplier:"Al Noor Contracting",invoice:"INV-AN-4912",project:"Green Park",description:"Approved finishing works",invoiceDate:"08 Aug 2026",dueDate:"22 Sep 2026",gross:85000,tax:4250,paid:0,approval:"Pending",payment:"Not initiated",status:"Overdue",source:"Vendor Invoice"},
+{id:"AP-2026-00979",supplierId:"VEN-0091",supplier:"Gulf Facilities LLC",invoice:"INV-GF-2077",project:"Creek Vista",description:"Facilities mobilization",invoiceDate:"18 Aug 2026",dueDate:"18 Sep 2026",gross:192000,tax:9600,paid:100000,approval:"Approved",payment:"Partially Paid",status:"Partially Paid",source:"Manual"},
+{id:"AP-2026-00976",supplierId:"VEN-0082",supplier:"BuildTech LLC",invoice:"INV-BT-8188",project:"Green Park",description:"Progress certification",invoiceDate:"01 Aug 2026",dueDate:"31 Aug 2026",gross:600000,tax:30000,paid:600000,approval:"Approved",payment:"Paid",status:"Paid",source:"Vendor Invoice"}
+];
+export const supplierPayments=[["PAY-2026-00712","24 Sep 2026","AED 100,000","Bank transfer","Processing","AED 140,000"],["PAY-2026-00688","31 Aug 2026","AED 600,000","Bank transfer","Paid","AED 0"]];
+export const approvalSteps=[["1","Finance Manager","Approved","Maya Joseph · 24 Sep, 10:15 AM"],["2","Management","Approved","Ahmed Malik · 24 Sep, 11:02 AM"]];
+export const financeDocuments=[["Supplier invoice","INV-BT-8219.pdf","BuildTech LLC","24 Sep 2026"],["Approval document","AP-2026-00982-approval.pdf","Finance Team","24 Sep 2026"],["Payment confirmation","PAY-2026-00712.pdf","Finance Team","24 Sep 2026"]];
+export const financeActivity=[["Receivable created","AR-2026-01842 created from reservation","18 Sep · 9:10 AM"],["Receipt recorded","RCT-2026-00941 · AED 122,500","24 Sep · 3:25 PM"],["Receipt verified","Finance Team confirmed proof of payment","24 Sep · 3:40 PM"],["Receivable cleared","Outstanding balance updated to AED 0","24 Sep · 4:15 PM"]];
+export const payableActivity=[["Payable created","AP-2026-00982 · BuildTech LLC","24 Sep · 9:00 AM"],["Invoice uploaded","INV-BT-8219.pdf","24 Sep · 9:03 AM"],["Submitted for approval","Finance Manager review","24 Sep · 9:12 AM"],["Approved","Management approval completed","24 Sep · 11:02 AM"],["Payment requested","PAY-2026-00712 · Processing","24 Sep · 11:20 AM"]];
+export const financeAudit=[["24 Sep · 4:15 PM","Finance Team","Status","Pending Verification","Cleared","Receipt verified"],["24 Sep · 3:40 PM","Maya Joseph","Allocation","Unallocated","AR-2026-01842","Approved allocation"],["18 Sep · 9:10 AM","System","Source link","—","RSV-2026-00182","CRM-originated receivable"]];
+export const payableAudit=[["24 Sep · 11:20 AM","Maya Joseph","Payment request","Not initiated","Processing","PAY-2026-00712"],["24 Sep · 11:02 AM","Ahmed Malik","Approval","Pending","Approved","Management approval"],["24 Sep · 9:00 AM","Finance Executive","Gross amount","—","AED 240,000","Initial entry"]];
+export const arReports=[["Accounts Receivable Summary","AED 42.2M","340 records","24 Sep 2026"],["Receivable Aging","AED 6.4M overdue","92 items","24 Sep 2026"],["Customer Outstanding","AED 42.2M","312 customers","24 Sep 2026"]];
+export const apReports=[["Accounts Payable Summary","AED 12.8M","186 records","24 Sep 2026"],["Payable Aging","AED 1.2M overdue","28 items","24 Sep 2026"],["Supplier Outstanding","AED 12.8M","64 suppliers","24 Sep 2026"]];

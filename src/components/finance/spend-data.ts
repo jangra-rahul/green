@@ -1,0 +1,38 @@
+// Finance ERP Step 03 — budgets, expenses, reimbursements, profitability and spend (frontend module state).
+// Expenses reference Step 02 cost centres / GL and Step 01 AP by ID; no duplicated source records.
+export type Budget={id:string;name:string;type:string;scope:string;costCentre:string;project:string;fy:string;owner:string;amount:number;actual:number;committed:number;version:string;status:string};
+export const budgets:Budget[]=[
+{id:"BUD-2026-001",name:"Horizon Residences construction",type:"Project",scope:"Project",costCentre:"CC-CON-01",project:"Horizon Residences",fy:"FY2026",owner:"Khalid Mansoor",amount:48000000,actual:31600000,committed:8200000,version:"v3",status:"Active"},
+{id:"BUD-2026-002",name:"Green Park construction",type:"Project",scope:"Project",costCentre:"CC-CON-02",project:"Green Park",fy:"FY2026",owner:"Ravi Menon",amount:62000000,actual:55100000,committed:5400000,version:"v2",status:"At risk"},
+{id:"BUD-2026-003",name:"Marketing & launches",type:"Operating",scope:"Department",costCentre:"CC-MKT-01",project:"All",fy:"FY2026",owner:"Nadia Saleh",amount:4100000,actual:3920000,committed:410000,version:"v2",status:"Over budget"},
+{id:"BUD-2026-004",name:"Sales operations",type:"Operating",scope:"Department",costCentre:"CC-SAL-01",project:"All",fy:"FY2026",owner:"Omar Haddad",amount:6800000,actual:5240000,committed:640000,version:"v1",status:"Active"},
+{id:"BUD-2026-005",name:"Finance department",type:"Operating",scope:"Department",costCentre:"CC-FIN-01",project:"Corporate",fy:"FY2026",owner:"Maya Joseph",amount:3200000,actual:2410000,committed:120000,version:"v1",status:"Active"},
+{id:"BUD-2026-006",name:"IT & systems capex",type:"Capital",scope:"Company",costCentre:"CC-ADM-01",project:"Corporate",fy:"FY2026",owner:"Fatima Khan",amount:1500000,actual:420000,committed:280000,version:"v1",status:"Active"},
+{id:"BUD-2027-001",name:"Creek Vista launch FY2027",type:"Project",scope:"Project",costCentre:"CC-CON-01",project:"Creek Vista",fy:"FY2027",owner:"Maya Joseph",amount:26000000,actual:0,committed:0,version:"v1",status:"Pending approval"}
+];
+export const budgetLines=[["Digital campaigns","6120","AED 1,600,000","AED 1,710,000","AED 140,000"],["Events & launches","6130","AED 1,200,000","AED 1,080,000","AED 180,000"],["Print & outdoor","6140","AED 700,000","AED 640,000","AED 60,000"],["Brokers events","6150","AED 400,000","AED 350,000","AED 30,000"],["Agency retainers","6160","AED 200,000","AED 140,000","AED 0"]];
+export const budgetMonthly=[["Apr",62,58],["May",68,66],["Jun",71,74],["Jul",76,79],["Aug",82,88],["Sep",88,95]] as const;
+export const budgetRevisions=[["v2","12 Aug 2026","Nadia Saleh","AED 3,600,000 → AED 4,100,000","Creek Vista pre-launch events","Approved"],["v1","02 Jan 2026","Nadia Saleh","Original","Annual plan","Approved"]];
+export const budgetTransfers=[["BTR-2026-0014","BUD-2026-005 Finance","BUD-2026-003 Marketing","AED 150,000","Pending approval"],["BTR-2026-0011","BUD-2026-006 IT capex","BUD-2026-004 Sales","AED 80,000","Approved"]];
+
+export type Expense={id:string;date:string;employee:string;department:string;type:string;category:string;vendor:string;project:string;costCentre:string;budgetId:string;amount:number;vat:number;payment:string;source:string;status:string;docs:number;apRef:string};
+export const expenses:Expense[]=[
+{id:"EXP-2026-00812",date:"24 Sep 2026",employee:"Nadia Saleh",department:"Marketing",type:"Company expense",category:"Events & launches",vendor:"Jumeirah Events",project:"Creek Vista",costCentre:"CC-MKT-01",budgetId:"BUD-2026-003",amount:180000,vat:9000,payment:"Supplier invoice",source:"AP invoice",status:"Pending approval",docs:2,apRef:"AP-2026-00990"},
+{id:"EXP-2026-00811",date:"23 Sep 2026",employee:"Omar Haddad",department:"Sales",type:"Employee expense",category:"Client entertainment",vendor:"Zuma Dubai",project:"Horizon Residences",costCentre:"CC-SAL-01",budgetId:"BUD-2026-004",amount:2450,vat:117,payment:"Reimbursement",source:"Employee claim",status:"Approved",docs:1,apRef:"—"},
+{id:"EXP-2026-00809",date:"22 Sep 2026",employee:"Ravi Menon",department:"Construction",type:"Project expense",category:"Site utilities",vendor:"DEWA",project:"Green Park",costCentre:"CC-CON-02",budgetId:"BUD-2026-002",amount:48200,vat:2410,payment:"Bank transfer",source:"Manual",status:"Paid",docs:1,apRef:"—"},
+{id:"EXP-2026-00807",date:"21 Sep 2026",employee:"Layla Noor",department:"Finance",type:"Employee expense",category:"Travel",vendor:"Emirates",project:"Corporate",costCentre:"CC-FIN-01",budgetId:"BUD-2026-005",amount:6800,vat:0,payment:"Corporate card",source:"Card feed",status:"Missing documents",docs:0,apRef:"—"},
+{id:"EXP-2026-00806",date:"20 Sep 2026",employee:"Nadia Saleh",department:"Marketing",type:"Company expense",category:"Digital campaigns",vendor:"Meta Platforms",project:"All",costCentre:"CC-MKT-01",budgetId:"BUD-2026-003",amount:65000,vat:3250,payment:"Corporate card",source:"Card feed",status:"Returned",docs:1,apRef:"—"},
+{id:"EXP-2026-00804",date:"18 Sep 2026",employee:"Omar Haddad",department:"Sales",type:"Employee expense",category:"Client entertainment",vendor:"Zuma Dubai",project:"Horizon Residences",costCentre:"CC-SAL-01",budgetId:"BUD-2026-004",amount:2450,vat:117,payment:"Reimbursement",source:"Employee claim",status:"Rejected",docs:1,apRef:"—"}
+];
+export type Reimbursement={id:string;employee:string;department:string;expenses:string[];submitted:string;amount:number;paid:number;method:string;status:string};
+export const reimbursements:Reimbursement[]=[
+{id:"RMB-2026-0214",employee:"Omar Haddad",department:"Sales",expenses:["EXP-2026-00811"],submitted:"23 Sep 2026",amount:2450,paid:0,method:"Payroll",status:"Approved"},
+{id:"RMB-2026-0211",employee:"Layla Noor",department:"Finance",expenses:["EXP-2026-00807"],submitted:"21 Sep 2026",amount:6800,paid:0,method:"Bank transfer",status:"Pending approval"},
+{id:"RMB-2026-0205",employee:"Khalid Mansoor",department:"Construction",expenses:["EXP-2026-00790","EXP-2026-00792"],submitted:"12 Sep 2026",amount:14600,paid:9000,method:"Bank transfer",status:"Partially paid"},
+{id:"RMB-2026-0198",employee:"Fatima Khan",department:"Administration",expenses:["EXP-2026-00771"],submitted:"02 Sep 2026",amount:3900,paid:3900,method:"Payroll",status:"Paid"}
+];
+export const auditIssues=[["AUD-2026-0041","EXP-2026-00804","Possible duplicate of EXP-2026-00811 (same vendor, amount, employee)","Duplicate","Open"],["AUD-2026-0040","EXP-2026-00807","Receipt not attached after 48 hours","Missing document","Clarification requested"],["AUD-2026-0038","EXP-2026-00806","Card spend over single-transaction limit AED 50,000","Policy","Resolved"]];
+export const profitability=[["Horizon Residences","AED 52.4M","AED 33.1M","AED 5.1M","AED 14.2M","27%","On target"],["Green Park","AED 34.0M","AED 25.8M","AED 4.0M","AED 4.2M","12%","At risk"],["Creek Vista","AED 0","AED 3.4M","AED 0.7M","AED -4.1M","—","Pre-launch"],["Resale & services","AED 1.24M","AED 0.18M","AED 0.23M","AED 0.83M","67%","On target"]];
+export const spendBySupplier=[["BuildTech LLC","AED 5.4M","32%","12","Construction"],["Al Noor Contracting","AED 3.3M","19%","8","Construction"],["Gulf Facilities LLC","AED 1.4M","8%","5","Facilities"],["Jumeirah Events","AED 0.9M","5%","4","Marketing"],["Meta Platforms","AED 0.7M","4%","22","Marketing"]];
+export const spendByCategory=[["Construction",62],["Consultancy",11],["Marketing",9],["Facilities",7],["Salaries & admin",6],["Travel & entertainment",2],["Other",3]] as const;
+export const spendTrend=[["Apr",2.6],["May",2.9],["Jun",3.4],["Jul",3.1],["Aug",3.8],["Sep",3.5]] as const;

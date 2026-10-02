@@ -1,0 +1,8 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Download, Plus } from "lucide-react";
+import { AppShell } from "@/components/app-shell";
+import { OfferList } from "@/components/sales/sales-lists";
+import { SalesNavigation } from "@/components/sales/sales-ui";
+import { Button } from "@/components/ui/crm";
+export const Route=createFileRoute("/sales/offers/")({head:()=>({meta:[{title:"Sales Offers | Green Horizon CRM"},{name:"description",content:"Prepare, approve and manage commercial offers for customers."},{property:"og:title",content:"Sales Offers | Green Horizon CRM"},{property:"og:description",content:"Prepare, approve and manage commercial offers for customers."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}]}),component:OffersPage});
+function OffersPage(){return <AppShell crumbs={["Workspace","Sales & bookings","Sales offers"]}><div className="mx-auto max-w-[1580px] p-4 md:p-6"><header className="flex flex-col gap-4 xl:flex-row xl:justify-between"><div><p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Sales operations</p><h1 className="mt-1 text-[34px] font-bold">Sales offers</h1><p className="text-sm text-muted-foreground">Prepare, approve and manage commercial offers for customers.</p></div><div className="flex gap-2"><Button variant="secondary"><Download size={16}/>Export</Button><Link to="/sales/offers/create"><Button><Plus size={16}/>New sales offer</Button></Link></div></header><SalesNavigation/><OfferList/></div></AppShell>}

@@ -1,0 +1,3 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { ProjectForm } from "./projects.create";
+export const Route=createFileRoute("/projects/$projectId/edit")({head:({params})=>({meta:[{title:`Edit ${params.projectId} | Green Horizon CRM`},{name:"description",content:"Edit project metadata and preserve audit history."},{property:"og:title",content:`Edit ${params.projectId} | Green Horizon CRM`},{property:"og:description",content:"Edit project metadata and preserve audit history."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}]}),component:()=> <ProjectForm edit/>});
