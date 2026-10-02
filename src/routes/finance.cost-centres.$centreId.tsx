@@ -1,0 +1,13 @@
+import {createFileRoute,Link,notFound} from "@tanstack/react-router";
+import {AppShell} from "@/components/app-shell";
+import {costCentres,fmt,journals} from "@/components/finance/accounting-data";
+import {AuditPanel,Panel,RecordTable,pageMeta} from "@/components/finance/accounting-ui";
+import {FinancePage} from "@/components/finance/finance-ui";
+import {InfoGrid} from "@/components/sales/sales-ui";
+import {ProgressBar,StatusBadge} from "@/components/ui/crm";
+export const Route=createFileRoute("/finance/cost-centres/$centreId")({loader:({params})=>{const centre=costCentres.find(c=>c.id===params.centreId);if(!centre)throw notFound();return {centre}},head:({loaderData})=>loaderData?pageMeta(`${loaderData.centre.name} · Cost centre`,`Budget, actual spend and postings for ${loaderData.centre.name}.`):{meta:[{title:"Cost centre not found"},{name:"robots",content:"noindex"}]},notFoundComponent:()=><AppShell><div className="p-8 text-sm">Cost centre not found. <Link to="/finance/cost-centres" className="text-primary">Back</Link></div></AppShell>,component:Page});
+function Page(){const {centre:c}=Route.useLoaderData();const used=Math.round((c.actual+c.committed)/c.budget*100);const lines=journals.flatMap(j=>j.lines.filter(l=>l.costCentre===c.id).map(l=>[<Link to="/finance/ledger/journals/$journalId" params={{journalId:j.id}} className="text-primary">{j.id}</Link>,j.date,l.account,l.project,l.debit?fmt(l.debit):"—",l.credit?fmt(l.credit):"—",j.status]));
+return <AppShell crumbs={["Finance ERP","Cost centres",c.id]}><FinancePage eyebrow={`COST CENTRE · ${c.id}`} title={c.name} description={`${c.level} · Parent: ${c.parent} · Manager: ${c.manager}`} actions={<StatusBadge tone="success">{c.status}</StatusBadge>}>
+<div className="mt-5 grid gap-4 xl:grid-cols-[1fr_360px]"><Panel title="Budget vs actual"><InfoGrid items={[["Budget",fmt(c.budget)],["Actual",fmt(c.actual)],["Committed",fmt(c.committed)],["Remaining",fmt(c.budget-c.actual-c.committed)],["Utilisation",`${used}%`],["Project dimension",c.project]]}/><div className="mt-4"><ProgressBar value={used}/></div></Panel>
+<Panel title="Allocation rules" subtitle="Receiving projects for shared costs">{[["Horizon Residences","48%"],["Green Park","34%"],["Creek Vista","18%"]].map(([p,v])=><div key={p} className="flex justify-between border-b border-border py-2 text-xs"><span>{p}</span><strong>{v}</strong></div>)}</Panel></div>
+<div className="mt-4"><Panel flush title="Posted lines"><RecordTable headers={["Journal","Date","Account","Project","Debit","Credit","Status"]} badges={[6]} rows={lines}/></Panel></div><div className="mt-4"><AuditPanel/></div></FinancePage></AppShell>}
